@@ -22,7 +22,7 @@ Ask concise follow-up questions for critical missing information. If the user do
 - Accept any ISO 3166-1 alpha-2 country code. For a country without a curated link, use the official WIPO country-profile/office directory to find that country's national register, and mark it as a source-discovery step until a live query is completed.
 - Search relevant goods/services classes and adjacent classes; record the exact query, source, jurisdiction, date checked, filters, result/status, and direct record URL.
 - Distinguish live/pending/dead/expired records where the source exposes status. A dead record may still matter through use or other rights; do not assume it is harmless.
-- Never defeat a CAPTCHA, login requirement, access restriction, rate limit, or human-verification control. Stop automated access and provide the official URL and the exact manual steps/query to continue.
+- If a CAPTCHA, login requirement, rate limit, or human-verification control appears, pause only that source; open/provide its official URL with the exact query and manual steps. Never solve it, automate it, or route around it. Mark `awaiting_manual_verification`, retain a checkpoint without credentials/tokens, and continue other independent sources. Resume only after the user confirms completing the official check or supplies records. Inspect results only if exposed in the authorized session or supplied by the user. If not accessible, request a paste/export and keep `manual_results_not_provided`; verification completion alone is not search evidence.
 - Never imply a source was searched unless its results were actually inspected. If unavailable, mark it “not searched” with reason.
 
 ## Name generation and ranking
@@ -46,7 +46,7 @@ If asked for logo concepts, propose original visual directions and describe them
 Return:
 
 1. Scope summary: industry, goods/services, likely classes, chosen jurisdictions, language variants, and assumptions.
-2. Source coverage table with operator, jurisdiction, URL, checked date, query, outcome, and limitations.
+2. Complete colour-coded findings table with one row per candidate × jurisdiction/source, including unsearched and pending entries. Use text plus emoji: 🟢 no relevant record observed in an inspected query (not clearance); 🟡 possible match, partial search, or manual follow-up; 🔴 potentially relevant record observed; ⚪ not searched, awaiting verification, or results unavailable. Include operator/register, jurisdiction, exact query and filters, classes, date checked, observed result or “not inspected”, official source/record link, limitation, and next action. Add a status count summary without omitting rows.
 3. A ranked shortlist of 10 names, with evidence and outstanding checks per candidate.
 4. Logo direction(s) and image-search status if requested.
 5. Manual tasks for blocked portals, clearly labelled.
