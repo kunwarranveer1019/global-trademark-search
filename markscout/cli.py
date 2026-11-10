@@ -153,6 +153,28 @@ def main() -> None:
         item["search_term_for_directory_fallbacks"] = item["name"]
         item["additional_national_sources_to_discover"] = [s["code"] for s in selected if s["scope"] == "national_directory_fallback"]
         item["review_status"] = "not_searched"
+        item["findings"] = [
+            {
+                "jurisdiction": s["code"],
+                "register": s["name"],
+                "operator": s.get("operator", ""),
+                "status": "not_searched" if s["scope"] != "national_directory_fallback" else "source_discovery_required",
+                "indicator": "⚪",
+                "query": item["name"],
+                "classes": [entry["number"] for entry in selected_classes],
+                "checked_at": None,
+                "observed_result": "Not inspected; this CLI creates search links/checklists only.",
+                "source_url": s.get("search_url"),
+                "record_url": None,
+                "limitation": s.get("coverage", "Official portal link; live results have not been inspected."),
+                "next_action": "Open the official source and search manually; record observed results and direct record links.",
+                "manual_verification": {
+                    "state": "not_required_or_not_yet_encountered",
+                    "resume_rule": "If a human verification check appears, pause this source, let the user complete it directly, then resume only after explicit confirmation and inspectable result evidence. Never automate or bypass the check."
+                }
+            }
+            for s in selected
+        ]
     report = {
         "product": "MarkScout", "report_type": "preliminary_trademark_research_plan",
         "created_at": datetime.now(timezone.utc).isoformat(), "seed": args.seed,
@@ -160,8 +182,27 @@ def main() -> None:
         "coverage_note": "Country codes are ISO 3166-1 alpha-2. In world mode the source list includes configured national portals plus a WIPO profile for each ISO country/territory without a configured portal; those profile links are office-discovery steps, not completed searches. All live registry searches remain subject to each portal's access rules and coverage limits.",
         "nice_classification": {"edition": class_catalog["edition"], "effective_date": class_catalog["effective_date"], "source": class_catalog["source"], "selected_classes": selected_classes, "available_classes": class_catalog["classes"], "local_adoption_note": class_catalog["notes"]},
         "sources": selected, "candidates": names,
+        "findings_table": {
+            "required": True,
+            "columns": ["candidate", "jurisdiction/register", "status", "query_and_filters", "nice_classes", "checked_at", "observed_result", "official_source_or_record_url", "limitations", "next_action"],
+            "legend": [
+                {"indicator": "🟢", "status": "no_relevant_record_observed", "meaning": "An inspected query returned no relevant record; this is not clearance."},
+                {"indicator": "🟡", "status": "possible_match_or_partial_or_manual_follow_up", "meaning": "Possible similarity, partial search, or further human review is needed."},
+                {"indicator": "🔴", "status": "potentially_relevant_record", "meaning": "A potentially relevant record was observed; link it and explain the basis."},
+                {"indicator": "⚪", "status": "not_searched_or_awaiting_verification_or_results_unavailable", "meaning": "No live result evidence was inspected; state why and the next step."}
+            ],
+            "completeness_rule": "Include one row for every candidate, selected jurisdiction, and relevant source, including no-result, pending, blocked, and unsearched rows. Pair emoji with text labels for accessibility."
+        },
+        "manual_verification_workflow": {
+            "on_challenge": "Pause this source and present/open its official URL, query, and manual steps. Continue independent sources.",
+            "user_action": "The user completes the official check directly with the source.",
+            "resume_condition": "Resume only after the user explicitly confirms completion or supplies result records; inspect only results available in the authorized session or user-provided evidence.",
+            "unavailable_session": "Request result text/export/direct record links and keep status manual_results_not_provided until then.",
+            "prohibited": ["CAPTCHA solving", "automating verification", "proxying around verification", "storing CAPTCHA answers or session tokens"],
+            "checkpoint_fields": ["jurisdiction", "official_url", "candidate", "query", "classes", "last_completed_step", "handoff_time", "status"]
+        },
         "logo_guidance": "Copyright originality and trademark similarity are different questions. Search logo/device marks in each source's official image or Vienna-code search when available. Similarity tools require human review and cannot certify freedom to use.",
-        "access_policy": "Use public interfaces according to their terms. Stop at CAPTCHA, login, rate-limit, or human verification and hand off the official link; never bypass it.",
+        "access_policy": "Use public interfaces according to their terms. If CAPTCHA, login, rate-limit, or human verification appears, pause that source, hand off the official link for direct user completion, and resume only after explicit confirmation plus inspectable evidence. Never bypass it.",
         "legal_note": "No candidate is certified available or copyright-free. Obtain qualified trademark counsel review before adoption or filing."
     }
     rendered = json.dumps(report, indent=2, ensure_ascii=False)
