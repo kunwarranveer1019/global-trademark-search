@@ -1,0 +1,1 @@
+"""Bundled classification reference data."""
