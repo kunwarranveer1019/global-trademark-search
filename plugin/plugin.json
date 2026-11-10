@@ -1,11 +1,19 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "markscout-clearance",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Preliminary trademark research planning, official registry discovery, and brand name screening.",
-  "author": {"name": "MarkScout contributors"},
+  "author": {
+    "name": "MarkScout contributors"
+  },
   "license": "MIT",
-  "keywords": ["trademark", "brand", "registry", "clearance", "naming"],
+  "keywords": [
+    "trademark",
+    "brand",
+    "registry",
+    "clearance",
+    "naming"
+  ],
   "extensions": {
     "com.openai": {
       "interface": {
@@ -15,7 +23,7 @@
         "developerName": "MarkScout contributors",
         "category": "Education & Research",
         "capabilities": [],
-        "defaultPrompt": "Screen my brand name in selected official trademark registers; list gaps and suggest preliminary industry-fit names."
+        "defaultPrompt": "Screen my brand name in selected official trademark registers; report all findings in a colour-coded table and pause/resume sources after direct manual verification."
       }
     }
   }
