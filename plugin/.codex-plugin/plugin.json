@@ -1,0 +1,18 @@
+{
+  "interface": {
+    "displayName": "MarkScout Clearance",
+    "shortDescription": "Screen names in IP registers",
+    "longDescription": "Plan preliminary trademark searches across selected jurisdictions, compare industry-fit name ideas, and report source coverage and unresolved checks.",
+    "developerName": "MarkScout contributors",
+    "category": "Education & Research",
+    "capabilities": [],
+    "defaultPrompt": "Screen my brand name in selected official trademark registers; report all findings in a colour-coded table and pause/resume sources after direct manual verification."
+  },
+  "name": "markscout-clearance",
+  "version": "0.1.7",
+  "description": "Preliminary trademark research planning, official registry discovery, and brand name screening.",
+  "author": {"name": "MarkScout contributors"},
+  "keywords": ["trademark", "brand", "registry", "clearance", "naming"],
+  "license": "MIT",
+  "skills": "./skills"
+}
