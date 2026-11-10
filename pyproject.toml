@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "markscout"
+version = "0.2.0"
+description = "Preliminary trademark clearance research helper"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = ["pycountry>=24.6"]
+
+[project.scripts]
+markscout = "markscout.cli:main"
+
+[tool.setuptools]
+packages = ["markscout", "markscout.data"]
+
+[tool.setuptools.package-data]
+"markscout.data" = ["*.json"]
